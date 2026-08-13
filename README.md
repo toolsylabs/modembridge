@@ -156,6 +156,7 @@ uv run python -m twine check dist/*
 ## Releasing
 
 Release steps are documented in `RELEASE.md`.
+For `uv` + `.env` publish flow, see `docs/uv-publish.md`.
 
 ## Creator
 
