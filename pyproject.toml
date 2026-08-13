@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "modembridge"
+version = "0.1.0"
+description = "Extensible Python SDK for cellular modems and SMS gateway devices"
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "SaidAbbos Khudoykulov", email = "abbos.xudoyqulov@gmail.com" }]
+requires-python = ">=3.11"
+dependencies = ["requests>=2.31"]
+keywords = ["sms", "modem", "gateway", "zte", "cellular", "sdk"]
+classifiers = [
+	"Development Status :: 3 - Alpha",
+	"Intended Audience :: Developers",
+	"Operating System :: OS Independent",
+	"Programming Language :: Python :: 3",
+	"Programming Language :: Python :: 3.11",
+	"Programming Language :: Python :: 3.12",
+	"Programming Language :: Python :: 3.13",
+	"Topic :: Communications",
+	"Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[project.urls]
+Homepage = "https://github.com/toolsylabs/modembridge"
+Repository = "https://github.com/toolsylabs/modembridge"
+Issues = "https://github.com/toolsylabs/modembridge/issues"
+Changelog = "https://github.com/toolsylabs/modembridge/blob/main/CHANGELOG.md"
+Organization = "https://github.com/toolsylabs"
+Website = "https://toolsy.fyi"
+
+[project.optional-dependencies]
+dev = [
+	"build>=1.2",
+	"twine>=5.1",
+]
+
+[dependency-groups]
+dev = [
+	"build>=1.2",
+	"twine>=5.1",
+]
+
+[project.scripts]
+modembridge = "modembridge.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.package-data]
+modembridge = ["py.typed"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.uv]
+package = true
+default-groups = ["dev"]
