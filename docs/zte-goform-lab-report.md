@@ -95,6 +95,22 @@ Observed parsing semantics:
 
 - Read operations can be retried safely.
 - SMS send should avoid blind retries to reduce duplicate delivery risk after uncertain responses.
+- A successful `SEND_SMS` response means the modem accepted the request, not that the SMS is fully delivered.
+- For final delivery confirmation, query `sms_cmd_status_info` with `sms_cmd=4` and read `sms_cmd_status_result`.
+
+## Real-Modem Validation Notes
+
+The live-device validation script was run against a real ZTE gateway using the local `.env` credentials.
+
+Observed output:
+
+- `probe()` returned `True`
+- `get_sms_history()` returned real entries from the modem
+- `send_sms()` returned `{"result":"success"}` and a queue status of `1` (`queued`)
+- the newly sent message immediately appeared in history and was retrievable by modem `id`
+- `get_sms_by_id()` and `get_sms_by_phone()` correctly found the message in the modem's history
+
+This confirms the architecture works on real hardware and that status semantics must be interpreted as request acceptance, not final delivery.
 
 ## Security Notes
 

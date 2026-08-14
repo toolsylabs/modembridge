@@ -133,7 +133,18 @@ class ZteGoformDriver:
                 response = self._post("/goform/goform_set_cmd_process", payload)
                 self._update_session_from_response(response)
                 if response.text and '"result":"success"' in response.text.lower():
-                    return SmsSendResult(ok=True, message="SMS sent", details={"attempt": attempt + 1, "response": response.text})
+                    status = self._read_sms_send_status()
+                    details = {
+                        "attempt": attempt + 1,
+                        "response": response.text,
+                        "sms_cmd_status_result": status.get("sms_cmd_status_result"),
+                        "send_status": self._describe_sms_send_status(str(status.get("sms_cmd_status_result", "")).strip()),
+                    }
+                    return SmsSendResult(
+                        ok=True,
+                        message="SMS send request accepted by modem; final delivery status must be checked separately",
+                        details=details,
+                    )
                 if response.text and '"result":"success"' not in response.text.lower():
                     if attempt < retries - 1:
                         continue
@@ -143,6 +154,31 @@ class ZteGoformDriver:
                     continue
                 return SmsSendResult(ok=False, message=str(exc), details={"attempt": attempt + 1})
         return SmsSendResult(ok=False, message="SMS send failed", details={})
+
+    def _read_sms_send_status(self) -> dict[str, Any]:
+        response = self._get(
+            "/goform/goform_get_cmd_process",
+            {"isTest": "false", "cmd": "sms_cmd_status_info", "sms_cmd": "4"},
+        )
+        self._update_session_from_response(response)
+        response.raise_for_status()
+        if not response.text:
+            return {}
+        try:
+            return response.json()
+        except ValueError:
+            return {"raw": response.text}
+
+    def _describe_sms_send_status(self, value: str) -> str:
+        normalized = str(value).strip()
+        mapping = {
+            "0": "unknown",
+            "1": "queued",
+            "2": "sending",
+            "3": "delivered",
+            "4": "failed",
+        }
+        return mapping.get(normalized, "unknown")
 
     def get_sms_history(self) -> list[SmsHistoryEntry]:
         self.login()

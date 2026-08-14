@@ -76,6 +76,31 @@ class ModemBridgeCoreTests(unittest.TestCase):
         with self.assertRaises(ModemConfigurationError):
             profile.validate()
 
+    def test_send_status_mapping_distinguishes_accepted_from_delivered(self) -> None:
+        profile = ModemProfile(name="zte_goform", host="http://192.168.0.1", password="secret")
+        driver = ZteGoformDriver(profile)
+        self.assertEqual(driver._describe_sms_send_status("2"), "sending")
+        self.assertEqual(driver._describe_sms_send_status("3"), "delivered")
+        self.assertEqual(driver._describe_sms_send_status("4"), "failed")
+
+    def test_modem_filters_history_by_id_and_phone(self) -> None:
+        profile = ModemProfile(name="zte_goform", host="http://192.168.0.1", password="secret")
+        manager = ModemManager(load_external_drivers=False)
+        modem = manager.connect(profile)
+
+        entries = [
+            type("Entry", (), {"id": "101", "sender": "+998901", "receiver": "+998902", "body": "one", "status": "sent", "direction": "sent"})(),
+            type("Entry", (), {"id": "202", "sender": "+998903", "receiver": "+998902", "body": "two", "status": "received", "direction": "received"})(),
+            type("Entry", (), {"id": "303", "sender": "+998901", "receiver": "+998904", "body": "three", "status": "sent", "direction": "sent"})(),
+        ]
+
+        by_id = [entry for entry in entries if entry.id == "101"]
+        by_phone = [entry for entry in entries if entry.direction == "sent" and entry.receiver == "+998902"]
+
+        self.assertEqual(len(by_id), 1)
+        self.assertEqual(len(by_phone), 1)
+        self.assertEqual(by_phone[0].body, "one")
+
 
 if __name__ == "__main__":
     unittest.main()

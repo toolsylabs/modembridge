@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+- Refreshed project documentation to match the live ZTE hardware validation findings.
+- Clarified that a successful SMS send response is request acceptance, not final delivery confirmation.
+- Updated PyPI and repository references to the current ToolsyLabs ownership and package metadata.
+
 ## [0.1.0] - 2026-08-13
 - Initial public alpha of ModemBridge.
 - Added extensible manager + driver registry.

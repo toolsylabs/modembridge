@@ -8,7 +8,8 @@ It provides a unified API for SMS operations while keeping protocol-specific log
 
 - Project maturity: alpha (`0.1.0`)
 - First real driver: ZTE Goform HTTP modem
-- Verified baseline: login + SMS send flow derived from a working real-device implementation
+- Verified baseline: real-device login, SMS send request, SMS history retrieval, and ID/phone lookup on a live ZTE gateway
+- Important nuance: `SEND_SMS` returns a request-accepted signal, not final delivery confirmation; the modem’s status endpoint must be checked separately
 
 ## Features
 
@@ -77,6 +78,52 @@ Read history:
 ```bash
 modembridge --host http://192.168.0.1 --password your-password --history
 ```
+
+## SMS lookup patterns
+
+You can fetch an SMS by its modem ID or filter by phone number when you need to identify a specific sent message.
+
+```python
+from modembridge import ModemManager, ModemProfile
+
+profile = ModemProfile(
+    name="zte_goform",
+    host="http://192.168.0.1",
+    username="admin",
+    password="your-password",
+)
+
+manager = ModemManager()
+modem = manager.connect(profile)
+
+one = modem.get_sms_by_id("42")
+print(one)
+
+sent_to = modem.get_sms_by_phone("+998901234567", direction="sent")
+print(sent_to)
+
+modem.close()
+```
+
+This is useful when you need to confirm whether a specific SMS was sent and to which number it was sent.
+
+## Real modem validation
+
+The project has been validated against a live ZTE Goform modem using the configured modem password from environment variables.
+
+```bash
+uv run --env-file .env python examples/real_modem_check.py
+```
+
+Observed live-device behavior:
+
+- `probe()` returned `True` on the real modem
+- `get_sms_history()` returned real SMS entries from the modem
+- `send_sms()` returned `ok=True` with a request-accepted result
+- the modem reported `sms_cmd_status_result=1` immediately after send, which maps to `queued` rather than final delivery
+- `get_sms_by_id()` and `get_sms_by_phone()` successfully returned the just-sent message from history
+
+This confirms that the SDK works with the live device and that delivery status must be checked separately from the immediate send response.
 
 ## Architecture
 

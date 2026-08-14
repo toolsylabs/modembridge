@@ -1,5 +1,7 @@
 # Security Policy
 
+ModemBridge is maintained by ToolsyLabs and published on PyPI as `modembridge`.
+
 ## Supported versions
 - `0.1.x` is currently supported.
 
@@ -11,6 +13,8 @@ Instead, report privately to the maintainers with:
 - Reproduction steps
 - Potential impact
 - Suggested fix (optional)
+
+If the repository is public, use the GitHub security reporting flow or contact the project maintainer directly through the project organization.
 
 ## Sensitive data handling
 Never include real modem credentials, SIM numbers, IMSI/IMEI, or active session cookies in issues, logs, screenshots, tests, or fixtures.

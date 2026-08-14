@@ -1,6 +1,12 @@
 # UV Build and Publish Guide
 
-This guide shows how to build and publish this package using `uv` and a local `.env` file.
+This guide shows how to build and publish the ModemBridge package to PyPI using `uv` and a local `.env` file.
+
+Project references:
+
+- PyPI package: https://pypi.org/project/modembridge/
+- GitHub repository: https://github.com/toolsylabs/modembridge
+- Organization: https://github.com/toolsylabs
 
 ## 1. Prepare `.env`
 
