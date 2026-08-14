@@ -158,6 +158,10 @@ uv run python -m twine check dist/*
 Release steps are documented in `RELEASE.md`.
 For `uv` + `.env` publish flow, see `docs/uv-publish.md`.
 
+## Package
+
+- PyPI: https://pypi.org/project/modembridge/
+
 ## Creator
 
 - Name: SaidAbbos Khudoykulov
