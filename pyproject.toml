@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "modembridge"
-version = "0.1.0"
+version = "0.1.1"
 description = "Extensible Python SDK for cellular modems and SMS gateway devices"
 readme = "README.md"
 license = "MIT"

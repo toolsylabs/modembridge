@@ -9,6 +9,8 @@ Package and repo references:
 - Organization: https://github.com/toolsylabs
 
 ## 1. Pre-release checks
+- Check the version in `pyproject.toml` before publishing.
+- If the previous version already exists on PyPI, bump the version first.
 - Run tests: `python -m unittest discover -s tests -v`
 - Build artifacts: `python -m build`
 - Validate artifacts: `python -m twine check dist/*`

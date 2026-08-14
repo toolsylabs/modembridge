@@ -14,10 +14,12 @@ Create a `.env` file in project root:
 
 ```env
 UV_PUBLISH_TOKEN=pypi-xxxxxxxxxxxxxxxxxxxx
+MODEMBRIDGE_TEXT="Test message from ModemBridge"
 ```
 
 Notes:
 - Keep `.env` in `.gitignore`.
+- Quote values that contain spaces, such as `MODEMBRIDGE_TEXT="Test message from ModemBridge"`.
 - Do not share token values in chat, logs, or screenshots.
 
 ## 2. Build package

@@ -2,7 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [0.1.1] - 2026-08-14
+- Fixed `.env` parsing warnings by quoting values that contain spaces.
+- Bumped package version because `0.1.0` already existed on PyPI.
 - Refreshed project documentation to match the live ZTE hardware validation findings.
 - Clarified that a successful SMS send response is request acceptance, not final delivery confirmation.
 - Updated PyPI and repository references to the current ToolsyLabs ownership and package metadata.
